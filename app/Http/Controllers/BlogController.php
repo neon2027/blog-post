@@ -48,6 +48,6 @@ class BlogController extends Controller
 
         $blog->delete();
 
-        return redirect()->back()->with('success', 'Blog deleted successfully');
+        return redirect()->route('dashboard')->with('success', 'Blog deleted successfully');
     }
 }

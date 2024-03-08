@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,16 @@ Route::get('/dashboard', function () {
     $blogs = Blog::with('comments','likes', 'user')
         ->withCount('comments', 'likes')
         ->latest()->get();
-    return view('dashboard', compact('blogs'));
+
+    $selectedBlog = null;
+
+    if(request()->blog) {
+        $selectedBlog = Blog::where('id', request()->blog)
+            ->with('comments','likes', 'user')
+            ->withCount('comments', 'likes')
+            ->first();
+    }
+    return view('dashboard', compact('blogs', 'selectedBlog'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -36,6 +46,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('blogs', BlogController::class);
     Route::post('/blogs/{blog}/like', [BlogController::class, 'like'])->name('blogs.like');
+    Route::post('/blogs/{blog}/comment', [CommentController::class, 'store'])->name('comments.store');
+    Route::resource('comments', CommentController::class)->except(['store']);
 
 });
 
