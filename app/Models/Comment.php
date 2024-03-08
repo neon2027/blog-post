@@ -17,6 +17,11 @@ class Comment extends Model
         'blog_id',
     ];
 
+    public function getCommentAttribute($value)
+    {
+        return nl2br($value);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

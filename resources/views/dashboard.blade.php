@@ -59,7 +59,7 @@
               </div>
               <div class="mt-4">
                 <p class="text-lg">
-                  {{ $blog->content }}
+                  {!! $blog->content !!}
                 </p>
               </div>
 

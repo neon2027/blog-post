@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
@@ -48,7 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/blogs/{blog}/like', [BlogController::class, 'like'])->name('blogs.like');
     Route::post('/blogs/{blog}/comment', [CommentController::class, 'store'])->name('comments.store');
     Route::resource('comments', CommentController::class)->except(['store']);
+    Route::resource('likes', LikeController::class)->only(['index']);
 
 });
 
 require __DIR__.'/auth.php';
+
+
+// Route::resource('post', App\Http\Controllers\PostController::class)->only('index', 'store');
